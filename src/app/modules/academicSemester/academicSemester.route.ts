@@ -17,7 +17,7 @@ router.patch(
   AcademicSemesterController.updateOneInDB
 );
 
-router.delete('/:id', AcademicSemesterController.deleteByIdFromDB);
+router.delete('/:id', AcademicSemesterController.deleteFromDB);
 
 router.get('/:id', AcademicSemesterController.getDataById);
 
