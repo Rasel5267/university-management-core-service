@@ -57,10 +57,11 @@ const updateOneInDB = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const deleteByIdFromDB = catchAsync(async (req: Request, res: Response) => {
+const deleteFromDB = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
 
-  const result = await StudentService.getDataById(id);
+  const result = await StudentService.deleteFromDB(id);
+
   sendResponse<Student>(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -74,5 +75,5 @@ export const StudentController = {
   getAllFromDB,
   getDataById,
   updateOneInDB,
-  deleteByIdFromDB,
+  deleteFromDB,
 };

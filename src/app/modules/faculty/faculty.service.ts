@@ -105,10 +105,14 @@ const updateOneInDB = async (
   return result;
 };
 
-const deleteByIdFromDB = async (id: string): Promise<Faculty> => {
+const deleteFromDB = async (id: string): Promise<Faculty> => {
   const result = await prisma.faculty.delete({
     where: {
       id,
+    },
+    include: {
+      academicDepartment: true,
+      academicFaculty: true,
     },
   });
   return result;
@@ -119,5 +123,5 @@ export const FacultyService = {
   getAllFromDB,
   getDataById,
   updateOneInDB,
-  deleteByIdFromDB,
+  deleteFromDB,
 };
