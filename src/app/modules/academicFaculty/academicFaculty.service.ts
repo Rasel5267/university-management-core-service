@@ -90,7 +90,7 @@ const getDataById = async (id: string): Promise<AcademicFaculty | null> => {
 const updateOneInDB = async (
   id: string,
   payload: Partial<AcademicFaculty>
-): Promise<AcademicFaculty> => {
+): Promise<AcademicFaculty | null> => {
   const result = await prisma.academicFaculty.update({
     where: {
       id,

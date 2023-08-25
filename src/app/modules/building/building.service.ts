@@ -87,7 +87,7 @@ const getDataById = async (id: string): Promise<Building | null> => {
 const updateOneInDB = async (
   id: string,
   payload: Partial<Building>
-): Promise<Building> => {
+): Promise<Building | null> => {
   const result = await prisma.building.update({
     where: {
       id,

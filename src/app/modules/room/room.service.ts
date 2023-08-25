@@ -93,7 +93,7 @@ const getDataById = async (id: string): Promise<Room | null> => {
 const updateOneInDB = async (
   id: string,
   payload: Partial<Room>
-): Promise<Room> => {
+): Promise<Room | null> => {
   const result = await prisma.room.update({
     where: {
       id,
