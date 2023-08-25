@@ -11,6 +11,12 @@ router.post(
   FacultyController.insertIntoDB
 );
 
+router.patch(
+  '/:id',
+  validateRequest(FacultyValidation.update),
+  FacultyController.updateOneInDB
+);
+
 router.delete('/:id', FacultyController.deleteByIdFromDB);
 
 router.get('/:id', FacultyController.getDataById);
