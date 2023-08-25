@@ -1,0 +1,1 @@
+middleName and profileImage change to require.
