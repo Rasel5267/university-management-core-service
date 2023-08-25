@@ -55,8 +55,8 @@ model Student {
     studentId    String
     firstName    String
     lastName     String
-    middleName   String
-    profileImage String
+    middleName   String?
+    profileImage String?
     email        String
     contactNo    String
     gender       String
@@ -81,8 +81,8 @@ model Faculty {
     facultyId    String
     firstName    String
     lastName     String
-    middleName   String
-    profileImage String
+    middleName   String?
+    profileImage String?
     email        String
     contactNo    String
     gender       String
