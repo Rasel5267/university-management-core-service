@@ -45,6 +45,18 @@ const getDataById = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateOneInDB = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+
+  const result = await FacultyService.updateOneInDB(id, req.body);
+  sendResponse<Faculty>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Faculty updated successfully',
+    data: result,
+  });
+});
+
 const deleteByIdFromDB = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
 
@@ -61,5 +73,6 @@ export const FacultyController = {
   insertIntoDB,
   getAllFromDB,
   getDataById,
+  updateOneInDB,
   deleteByIdFromDB,
 };
