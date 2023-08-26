@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Course, Prisma } from '@prisma/client';
+import { Course, CourseFaculty, Prisma } from '@prisma/client';
 import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
@@ -113,6 +113,11 @@ const getAllFromDB = async (
           course: true,
         },
       },
+      faculties: {
+        include: {
+          faculty: true,
+        },
+      },
     },
     where: whereConditions,
     skip,
@@ -153,6 +158,11 @@ const getDataById = async (id: string): Promise<Course | null> => {
       preRequisiteFor: {
         include: {
           course: true,
+        },
+      },
+      faculties: {
+        include: {
+          faculty: true,
         },
       },
     },
@@ -251,10 +261,60 @@ const deleteFromDB = async (id: string): Promise<Course> => {
   return result;
 };
 
+const assignFaculties = async (
+  id: string,
+  payload: string[]
+): Promise<CourseFaculty[]> => {
+  await prisma.courseFaculty.createMany({
+    data: payload.map(facultyId => ({
+      courseId: id,
+      facultyId: facultyId,
+    })),
+  });
+
+  const assignFacultiesData = await prisma.courseFaculty.findMany({
+    where: {
+      courseId: id,
+    },
+    include: {
+      faculty: true,
+    },
+  });
+
+  return assignFacultiesData;
+};
+
+const removeFaculties = async (
+  id: string,
+  payload: string[]
+): Promise<CourseFaculty[] | null> => {
+  await prisma.courseFaculty.deleteMany({
+    where: {
+      courseId: id,
+      facultyId: {
+        in: payload,
+      },
+    },
+  });
+
+  const assignFacultiesData = await prisma.courseFaculty.findMany({
+    where: {
+      courseId: id,
+    },
+    include: {
+      faculty: true,
+    },
+  });
+
+  return assignFacultiesData;
+};
+
 export const CourseService = {
   insertIntoDB,
   getAllFromDB,
   getDataById,
   updateOneInDB,
   deleteFromDB,
+  assignFaculties,
+  removeFaculties,
 };

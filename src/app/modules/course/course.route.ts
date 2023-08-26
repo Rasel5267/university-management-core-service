@@ -27,6 +27,18 @@ router.delete(
   CourseController.deleteFromDB
 );
 
+router.post(
+  '/:id/assign-faculties',
+  auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
+  CourseController.assignFaculties
+);
+
+router.delete(
+  '/:id/remove-faculties',
+  auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
+  CourseController.removeFaculties
+);
+
 router.get('/:id', CourseController.getDataById);
 
 router.get('/', CourseController.getAllFromDB);
