@@ -24,6 +24,11 @@
             "date": 1692961298973,
             "name": "E:\\NextDev Projects\\university-management-core-services\\logs\\winston\\errors\\phu-2023-25-08-17-error.log",
             "hash": "efc16e6d7ca23e0fd1bb9f276139d13983b7f92ea780372cda806acd333698d0"
+        },
+        {
+            "date": 1693028647323,
+            "name": "E:\\NextDev Projects\\university-management-core-services\\logs\\winston\\errors\\phu-2023-26-08-11-error.log",
+            "hash": "9c82a472d2e7cf598388ba5d4b77df4f0aa37fa3a8ad96f64f794198540ad50c"
         }
     ],
     "hashType": "sha256"
