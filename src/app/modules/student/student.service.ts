@@ -4,7 +4,11 @@ import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import prisma from '../../../shared/prisma';
-import { studentSearchableFields } from './student.constant';
+import {
+  studentRelationalFields,
+  studentRelationalFieldsMapper,
+  studentSearchableFields,
+} from './student.constant';
 import { IStudentFilterRequest } from './student.interface';
 
 const insertIntoDB = async (data: Student): Promise<Student> => {
@@ -37,12 +41,22 @@ const getAllFromDB = async (
 
   if (Object.keys(filterData).length > 0) {
     andConditions.push({
-      AND: Object.keys(filterData).map(key => ({
-        [key]: {
-          equals: (filterData as any)[key].toLowerCase(),
-          mode: 'insensitive',
-        },
-      })),
+      AND: Object.keys(filterData).map(key => {
+        if (studentRelationalFields.includes(key)) {
+          return {
+            [studentRelationalFieldsMapper[key]]: {
+              id: (filterData as any)[key],
+            },
+          };
+        } else {
+          return {
+            [key]: {
+              equals: (filterData as any)[key],
+              mode: 'insensitive',
+            },
+          };
+        }
+      }),
     });
   }
 

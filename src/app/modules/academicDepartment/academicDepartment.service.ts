@@ -4,7 +4,11 @@ import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import prisma from '../../../shared/prisma';
-import { academicDepartmentSearchableFields } from './academicDepartment.constant';
+import {
+  academicDepartmentRelationalFields,
+  academicDepartmentRelationalFieldsMapper,
+  academicDepartmentSearchableFields,
+} from './academicDepartment.constant';
 import { IAcademicDepartmentFilterRequest } from './academicDepartment.interface';
 
 const insertIntoDB = async (
@@ -39,12 +43,22 @@ const getAllFromDB = async (
 
   if (Object.keys(filterData).length > 0) {
     andConditions.push({
-      AND: Object.keys(filterData).map(key => ({
-        [key]: {
-          equals: (filterData as any)[key].toLowerCase(),
-          mode: 'insensitive',
-        },
-      })),
+      AND: Object.keys(filterData).map(key => {
+        if (academicDepartmentRelationalFields.includes(key)) {
+          return {
+            [academicDepartmentRelationalFieldsMapper[key]]: {
+              id: (filterData as any)[key],
+            },
+          };
+        } else {
+          return {
+            [key]: {
+              equals: (filterData as any)[key].toLowerCase(),
+              mode: 'insensitive',
+            },
+          };
+        }
+      }),
     });
   }
 

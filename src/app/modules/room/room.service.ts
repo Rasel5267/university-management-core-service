@@ -4,7 +4,11 @@ import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import prisma from '../../../shared/prisma';
-import { roomSearchableFields } from './room.constant';
+import {
+  roomRelationalFields,
+  roomRelationalFieldsMapper,
+  roomSearchableFields,
+} from './room.constant';
 import { IRoomFilterRequest } from './room.interface';
 
 const insertIntoDB = async (data: Room): Promise<Room> => {
@@ -37,12 +41,22 @@ const getAllFromDB = async (
 
   if (Object.keys(filterData).length > 0) {
     andConditions.push({
-      AND: Object.keys(filterData).map(key => ({
-        [key]: {
-          equals: (filterData as any)[key].toLowerCase(),
-          mode: 'insensitive',
-        },
-      })),
+      AND: Object.keys(filterData).map(key => {
+        if (roomRelationalFields.includes(key)) {
+          return {
+            [roomRelationalFieldsMapper[key]]: {
+              id: (filterData as any)[key],
+            },
+          };
+        } else {
+          return {
+            [key]: {
+              equals: (filterData as any)[key],
+              mode: 'insensitive',
+            },
+          };
+        }
+      }),
     });
   }
 
