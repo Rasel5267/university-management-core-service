@@ -158,7 +158,7 @@ const assignCourses = async (
     })),
   });
 
-  const assignFacultiesData = await prisma.courseFaculty.findMany({
+  const assignCoursesData = await prisma.courseFaculty.findMany({
     where: {
       facultyId: id,
     },
@@ -167,7 +167,7 @@ const assignCourses = async (
     },
   });
 
-  return assignFacultiesData;
+  return assignCoursesData;
 };
 
 const removeCourses = async (
@@ -183,7 +183,7 @@ const removeCourses = async (
     },
   });
 
-  const assignFacultiesData = await prisma.courseFaculty.findMany({
+  const assignCoursesData = await prisma.courseFaculty.findMany({
     where: {
       facultyId: id,
     },
@@ -192,7 +192,7 @@ const removeCourses = async (
     },
   });
 
-  return assignFacultiesData;
+  return assignCoursesData;
 };
 
 export const FacultyService = {
