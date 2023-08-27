@@ -48,6 +48,19 @@ const getDataById = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateOneInDB = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+
+  const result = await SemesterRegistrationService.updateOneInDB(id, req.body);
+
+  sendResponse<SemesterRegistration>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Semester Registration updated successfully',
+    data: result,
+  });
+});
+
 const deleteFromDB = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
   const result = await SemesterRegistrationService.deleteFromDB(id);
@@ -64,5 +77,6 @@ export const SemesterRegistrationController = {
   insertIntoDB,
   getAllFromDB,
   getDataById,
+  updateOneInDB,
   deleteFromDB,
 };
