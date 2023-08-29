@@ -1,12 +1,5 @@
 export const offeredCourseClassScheduleFilterableFields: string[] = [
-  'searchTerm',
-  'startTime',
-  'endTime',
-  'daysInWeek',
-  'offeredCourseSectionId',
-  'semesterRegistrationId',
-  'roomId',
-  'facultyId',
+  'daysOfWeek',
 ];
 
 export const offeredCourseClassScheduleSearchableFields: string[] = [
