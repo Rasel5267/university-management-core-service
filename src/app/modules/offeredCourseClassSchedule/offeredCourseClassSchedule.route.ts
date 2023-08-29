@@ -14,4 +14,21 @@ router.post(
   OfferedCourseClassScheduleController.insertIntoDB
 );
 
+router.patch(
+  '/:id',
+  validateRequest(OfferedCourseClassScheduleValidations.update),
+  auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
+  OfferedCourseClassScheduleController.updateOneInDB
+);
+
+router.delete(
+  '/:id',
+  auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
+  OfferedCourseClassScheduleController.deleteFromDB
+);
+
+router.get('/:id', OfferedCourseClassScheduleController.getDataById);
+
+router.get('/', OfferedCourseClassScheduleController.getAllFromDB);
+
 export const OfferedCourseClassScheduleRoutes = router;

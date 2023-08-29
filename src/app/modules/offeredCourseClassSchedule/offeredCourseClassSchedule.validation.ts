@@ -27,6 +27,21 @@ const create = z.object({
   }),
 });
 
+const update = z.object({
+  body: z.object({
+    startTime: z.string().optional(),
+    endTime: z.string().optional(),
+    dayOfWeek: z
+      .enum([...Object.values(WeekDays)] as [string, ...string[]], {})
+      .optional(),
+    offeredCourseSectionId: z.string().optional(),
+    semesterRegistrationId: z.string().optional(),
+    roomId: z.string().optional(),
+    facultyId: z.string().optional(),
+  }),
+});
+
 export const OfferedCourseClassScheduleValidations = {
   create,
+  update,
 };

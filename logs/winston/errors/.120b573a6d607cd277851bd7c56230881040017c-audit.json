@@ -39,6 +39,16 @@
             "date": 1693333378664,
             "name": "E:\\NextDev Projects\\university-management-core-services\\logs\\winston\\errors\\phu-2023-30-08-00-error.log",
             "hash": "5210c23d9944ad3fab77593f4c0aa89d249fb8df5f65a833dcd3ca47790cd660"
+        },
+        {
+            "date": 1693335715550,
+            "name": "E:\\NextDev Projects\\university-management-core-services\\logs\\winston\\errors\\phu-2023-30-08-01-error.log",
+            "hash": "760c757e4c5ee69d69b38d6fd8fc868e9ccd186d5e2dd2e40135c93fa3977d54"
+        },
+        {
+            "date": 1693339293362,
+            "name": "E:\\NextDev Projects\\university-management-core-services\\logs\\winston\\errors\\phu-2023-30-08-02-error.log",
+            "hash": "8147eee0d0fe0b2b282b86b0bf63f9f3aef0f6ccc350f99f792c7051a1f7665a"
         }
     ],
     "hashType": "sha256"
