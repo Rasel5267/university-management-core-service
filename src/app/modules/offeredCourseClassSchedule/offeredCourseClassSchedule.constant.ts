@@ -1,10 +1,13 @@
 export const offeredCourseClassScheduleFilterableFields: string[] = [
-  'daysOfWeek',
+  'searchTerm',
+  'dayOfWeek',
+  'offeredCourseSectionId',
+  'semesterRegistrationId',
+  'roomId',
+  'facultyId',
 ];
 
 export const offeredCourseClassScheduleSearchableFields: string[] = [
-  'startTime',
-  'endTime',
   'dayOfWeek',
 ];
 
@@ -22,13 +25,3 @@ export const offeredCourseClassScheduleRelationalFieldsMapper: {
   roomId: 'room',
   facultyId: 'faculty',
 };
-
-export const daysInWeek = [
-  'SATURDAY',
-  'SUNDAY',
-  'MONDAY',
-  'TUESDAY',
-  'WEDNESDAY',
-  'THURSDAY',
-  'FRIDAY',
-];

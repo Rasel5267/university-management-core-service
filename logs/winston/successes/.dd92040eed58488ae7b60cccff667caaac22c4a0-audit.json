@@ -49,6 +49,16 @@
             "date": 1693339293356,
             "name": "E:\\NextDev Projects\\university-management-core-services\\logs\\winston\\successes\\phu-2023-30-08-02-success.log",
             "hash": "55eedd89b26aaa2c2d59ab96bbee9a20bd29cf93642bd732406de414268442d8"
+        },
+        {
+            "date": 1693493480988,
+            "name": "E:\\NextDev Projects\\university-management-core-services\\logs\\winston\\successes\\phu-2023-31-08-20-success.log",
+            "hash": "e86df9be2c573f32afb1dafce1a5ce4e97de676deadb6020d8867dc805f54722"
+        },
+        {
+            "date": 1693494286952,
+            "name": "E:\\NextDev Projects\\university-management-core-services\\logs\\winston\\successes\\phu-2023-31-08-21-success.log",
+            "hash": "f2a7f572f362dfa3403bd2009bf31832223fa0b31be11212be56a1f153af4220"
         }
     ],
     "hashType": "sha256"

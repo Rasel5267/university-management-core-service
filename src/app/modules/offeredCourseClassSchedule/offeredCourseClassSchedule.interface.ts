@@ -1,7 +1,7 @@
 export type IOfferedCourseClassScheduleFilterRequest = {
-  searchTerm?: string | undefined;
-  offeredCourseSectionId?: string | undefined;
-  semesterRegistrationId?: string | undefined;
-  roomId?: string | undefined;
-  facultyId?: string | undefined;
+  searchTerm?: string | null;
+  offeredCourseSectionId?: string | null;
+  semesterRegistrationId?: string | null;
+  roomId?: string | null;
+  facultyId?: string | null;
 };
