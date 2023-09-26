@@ -31,4 +31,4 @@ router.get('/:id', OfferedCourseClassScheduleController.getDataById);
 
 router.get('/', OfferedCourseClassScheduleController.getAllFromDB);
 
-export const OfferedCourseClassScheduleRoutes = router;
+export const OfferedCourseClassScheduleRoute = router;

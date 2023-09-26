@@ -83,7 +83,83 @@ const startMyRegistration = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Student SemesterRegistration started successfully',
+    message: 'Student Semester Registration started successfully',
+    data: result,
+  });
+});
+
+const enrollIntoCourse = catchAsync(async (req: Request, res: Response) => {
+  const user = (req as any).user;
+
+  const result = await SemesterRegistrationService.enrollIntoCourse(
+    user.userId,
+    req.body
+  );
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Student Semester Registration Course Enrolled Successfully',
+    data: result,
+  });
+});
+
+const withdrawFromCourse = catchAsync(async (req: Request, res: Response) => {
+  const user = (req as any).user;
+
+  const result = await SemesterRegistrationService.withdrawFromCourse(
+    user.userId,
+    req.body
+  );
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Withdraw from Course Successfully',
+    data: result,
+  });
+});
+
+const confirmMyRegistration = catchAsync(
+  async (req: Request, res: Response) => {
+    const user = (req as any).user;
+
+    const result = await SemesterRegistrationService.confirmMyRegistration(
+      user.userId
+    );
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Confirm your registration',
+      data: result,
+    });
+  }
+);
+
+const getMyRegistration = catchAsync(async (req: Request, res: Response) => {
+  const user = (req as any).user;
+
+  const result = await SemesterRegistrationService.getMyRegistration(
+    user.userId
+  );
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'My registration data retrieved successfully',
+    data: result,
+  });
+});
+
+const startNewSemester = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const result = await SemesterRegistrationService.startNewSemester(id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Semester Started successfully',
     data: result,
   });
 });
@@ -95,4 +171,9 @@ export const SemesterRegistrationController = {
   updateOneInDB,
   deleteFromDB,
   startMyRegistration,
+  enrollIntoCourse,
+  withdrawFromCourse,
+  confirmMyRegistration,
+  getMyRegistration,
+  startNewSemester,
 };
