@@ -7,6 +7,10 @@ import { RoomValidation } from './room.validation';
 
 const router = express.Router();
 
+router.get('/', RoomController.getAllFromDB);
+
+router.get('/:id', RoomController.getDataById);
+
 router.post(
   '/',
   validateRequest(RoomValidation.create),
@@ -26,9 +30,5 @@ router.delete(
   auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
   RoomController.deleteFromDB
 );
-
-router.get('/:id', RoomController.getDataById);
-
-router.get('/', RoomController.getAllFromDB);
 
 export const RoomRoute = router;

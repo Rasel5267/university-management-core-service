@@ -7,6 +7,10 @@ import { AcademicDepartmentValidation } from './academicDepartment.validation';
 
 const router = express.Router();
 
+router.get('/', AcademicDepartmentController.getAllFromDB);
+
+router.get('/:id', AcademicDepartmentController.getDataById);
+
 router.post(
   '/',
   validateRequest(AcademicDepartmentValidation.create),
@@ -26,9 +30,5 @@ router.delete(
   auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
   AcademicDepartmentController.deleteFromDB
 );
-
-router.get('/:id', AcademicDepartmentController.getDataById);
-
-router.get('/', AcademicDepartmentController.getAllFromDB);
 
 export const AcademicDepartmentRoute = router;

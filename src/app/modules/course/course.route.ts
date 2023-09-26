@@ -7,6 +7,10 @@ import { CourseValidation } from './course.validation';
 
 const router = express.Router();
 
+router.get('/', CourseController.getAllFromDB);
+
+router.get('/:id', CourseController.getDataById);
+
 router.post(
   '/',
   validateRequest(CourseValidation.create),
@@ -40,9 +44,5 @@ router.delete(
   auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
   CourseController.removeFaculties
 );
-
-router.get('/:id', CourseController.getDataById);
-
-router.get('/', CourseController.getAllFromDB);
 
 export const CourseRoute = router;

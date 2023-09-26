@@ -7,6 +7,10 @@ import { OfferedCourseValidation } from './offeredCourse.validation';
 
 const router = express.Router();
 
+router.get('/', OfferedCourseController.getAllFromDB);
+
+router.get('/:id', OfferedCourseController.getDataById);
+
 router.post(
   '/',
   validateRequest(OfferedCourseValidation.create),
@@ -26,9 +30,5 @@ router.delete(
   auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
   OfferedCourseController.deleteFromDB
 );
-
-router.get('/:id', OfferedCourseController.getDataById);
-
-router.get('/', OfferedCourseController.getAllFromDB);
 
 export const OfferedCourseRoute = router;

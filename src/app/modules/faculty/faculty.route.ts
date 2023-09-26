@@ -7,6 +7,22 @@ import { FacultyValidation } from './faculty.validation';
 
 const router = express.Router();
 
+router.get('/', FacultyController.getAllFromDB);
+
+router.get(
+  '/my-courses',
+  auth(ENUM_USER_ROLE.FACULTY),
+  FacultyController.myCourses
+);
+
+router.get('/:id', FacultyController.getDataById);
+
+router.get(
+  '/my-course-students',
+  auth(ENUM_USER_ROLE.FACULTY),
+  FacultyController.getMyCourseStudents
+);
+
 router.post(
   '/',
   validateRequest(FacultyValidation.create),
@@ -40,9 +56,5 @@ router.delete(
   auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
   FacultyController.removeCourses
 );
-
-router.get('/:id', FacultyController.getDataById);
-
-router.get('/', FacultyController.getAllFromDB);
 
 export const FacultyRoute = router;
