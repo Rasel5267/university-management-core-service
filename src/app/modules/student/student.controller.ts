@@ -1,56 +1,51 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Student } from '@prisma/client';
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { paginationFields } from '../../../constants/pagination';
 import catchAsync from '../../../shared/catchAsync';
 import pick from '../../../shared/pick';
 import sendResponse from '../../../shared/sendResponse';
-import { studentFilterableFields } from './student.constant';
+import { studentFilterableFields } from './student.constants';
 import { StudentService } from './student.service';
 
 const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
   const result = await StudentService.insertIntoDB(req.body);
-
-  sendResponse<Student>(res, {
+  sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Student Created successfully',
+    message: 'Student created successfully',
     data: result,
   });
 });
 
 const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, studentFilterableFields);
-  const options = pick(req.query, paginationFields);
-
+  const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
   const result = await StudentService.getAllFromDB(filters, options);
-  sendResponse<Student[]>(res, {
+  sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Students retrieved successfully',
+    message: 'Students fetched successfully',
     meta: result.meta,
     data: result.data,
   });
 });
 
-const getDataById = catchAsync(async (req: Request, res: Response) => {
-  const id = req.params.id;
-
-  const result = await StudentService.getDataById(id);
-  sendResponse<Student>(res, {
+const getByIdFromDB = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const result = await StudentService.getByIdFromDB(id);
+  sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Student retrieved successfully',
+    message: 'Student fetched successfully',
     data: result,
   });
 });
 
-const updateOneInDB = catchAsync(async (req: Request, res: Response) => {
-  const id = req.params.id;
-
-  const result = await StudentService.updateOneInDB(id, req.body);
-  sendResponse<Student>(res, {
+const updateIntoDB = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const payload = req.body;
+  const result = await StudentService.updateIntoDB(id, payload);
+  sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Student updated successfully',
@@ -59,11 +54,9 @@ const updateOneInDB = catchAsync(async (req: Request, res: Response) => {
 });
 
 const deleteFromDB = catchAsync(async (req: Request, res: Response) => {
-  const id = req.params.id;
-
+  const { id } = req.params;
   const result = await StudentService.deleteFromDB(id);
-
-  sendResponse<Student>(res, {
+  sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Student deleted successfully',
@@ -109,8 +102,8 @@ const myAcademicInfo = catchAsync(async (req: Request, res: Response) => {
 export const StudentController = {
   insertIntoDB,
   getAllFromDB,
-  getDataById,
-  updateOneInDB,
+  getByIdFromDB,
+  updateIntoDB,
   deleteFromDB,
   myCourses,
   getMyCourseSchedules,

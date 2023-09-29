@@ -4,7 +4,7 @@ import ApiError from '../../../errors/ApiError';
 import prisma from '../../../shared/prisma';
 import { hasTimeConflict } from '../../../shared/utils';
 
-const checkRoomAvailability = async (data: OfferedCourseClassSchedule) => {
+const checkRoomAvailable = async (data: OfferedCourseClassSchedule) => {
   const alreadyBookedRoomOnDay =
     await prisma.offeredCourseClassSchedule.findMany({
       where: {
@@ -28,11 +28,11 @@ const checkRoomAvailability = async (data: OfferedCourseClassSchedule) => {
   };
 
   if (hasTimeConflict(existingSlots, newSlot)) {
-    throw new ApiError(httpStatus.CONFLICT, 'Room is already booked');
+    throw new ApiError(httpStatus.CONFLICT, 'Room is already booked!');
   }
 };
 
-const checkFacultyAvailability = async (data: OfferedCourseClassSchedule) => {
+const checkFacultyAvailable = async (data: OfferedCourseClassSchedule) => {
   const alreadyFacultyAssigned =
     await prisma.offeredCourseClassSchedule.findMany({
       where: {
@@ -56,11 +56,11 @@ const checkFacultyAvailability = async (data: OfferedCourseClassSchedule) => {
   };
 
   if (hasTimeConflict(existingSlots, newSlot)) {
-    throw new ApiError(httpStatus.CONFLICT, 'Faculty is already booked');
+    throw new ApiError(httpStatus.CONFLICT, 'Faculty is already booked!');
   }
 };
 
 export const OfferedCourseClassScheduleUtils = {
-  checkRoomAvailability,
-  checkFacultyAvailability,
+  checkRoomAvailable,
+  checkFacultyAvailable,
 };

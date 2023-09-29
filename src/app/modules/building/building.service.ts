@@ -1,17 +1,16 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-undef */
 import { Building, Prisma } from '@prisma/client';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import prisma from '../../../shared/prisma';
-import { buildingSearchableFields } from './building.constant';
+import { buildingSearchableFields } from './building.constants';
 import { IBuildingFilterRequest } from './building.interface';
 
 const insertIntoDB = async (data: Building): Promise<Building> => {
   const result = await prisma.building.create({
     data,
   });
-
   return result;
 };
 
@@ -20,7 +19,7 @@ const getAllFromDB = async (
   options: IPaginationOptions
 ): Promise<IGenericResponse<Building[]>> => {
   const { page, limit, skip } = paginationHelpers.calculatePagination(options);
-  const { searchTerm, ...filterData } = filters;
+  const { searchTerm } = filters;
 
   const andConditions = [];
 
@@ -35,27 +34,18 @@ const getAllFromDB = async (
     });
   }
 
-  if (Object.keys(filterData).length > 0) {
-    andConditions.push({
-      AND: Object.keys(filterData).map(key => ({
-        [key]: {
-          equals: (filterData as any)[key].toLowerCase(),
-          mode: 'insensitive',
-        },
-      })),
-    });
-  }
-
   const whereConditions: Prisma.BuildingWhereInput =
     andConditions.length > 0 ? { AND: andConditions } : {};
 
   const result = await prisma.building.findMany({
-    where: whereConditions,
     skip,
     take: limit,
+    where: whereConditions,
     orderBy:
       options.sortBy && options.sortOrder
-        ? { [options.sortBy]: options.sortOrder }
+        ? {
+            [options.sortBy]: options.sortOrder,
+          }
         : {
             createdAt: 'desc',
           },
@@ -66,52 +56,49 @@ const getAllFromDB = async (
 
   return {
     meta: {
-      total,
       page,
       limit,
+      total,
     },
     data: result,
   };
 };
 
-const getDataById = async (id: string): Promise<Building | null> => {
+const getByIdFromDB = async (id: string): Promise<Building | null> => {
   const result = await prisma.building.findUnique({
     where: {
       id,
     },
   });
-
   return result;
 };
 
 const updateOneInDB = async (
   id: string,
   payload: Partial<Building>
-): Promise<Building | null> => {
+): Promise<Building> => {
   const result = await prisma.building.update({
     where: {
       id,
     },
     data: payload,
   });
-
   return result;
 };
 
-const deleteFromDB = async (id: string): Promise<Building> => {
+const deleteByIdFromDB = async (id: string): Promise<Building> => {
   const result = await prisma.building.delete({
     where: {
       id,
     },
   });
-
   return result;
 };
 
 export const BuildingService = {
   insertIntoDB,
   getAllFromDB,
-  getDataById,
+  getByIdFromDB,
   updateOneInDB,
-  deleteFromDB,
+  deleteByIdFromDB,
 };

@@ -5,7 +5,6 @@ const getGradeFromMarks = (marks: number) => {
     grade: '',
     point: 0,
   };
-
   if (marks >= 0 && marks <= 39) {
     result = {
       grade: 'F',
@@ -41,7 +40,7 @@ const getGradeFromMarks = (marks: number) => {
   return result;
 };
 
-const calcCGPAAndGrade = (
+const calcCGPAandGrade = (
   payload: (StudentEnrolledCourse & { course: Course })[]
 ) => {
   if (payload.length === 0) {
@@ -55,8 +54,8 @@ const calcCGPAAndGrade = (
   let totalCGPA = 0;
 
   for (const grade of payload) {
-    totalCredit += grade.course.credits || 0;
     totalCGPA += grade.point || 0;
+    totalCredit += grade.course.credits || 0;
   }
 
   const avgCGPA = Number((totalCGPA / payload.length).toFixed(2));
@@ -69,5 +68,5 @@ const calcCGPAAndGrade = (
 
 export const StudentEnrolledCourseMarkUtils = {
   getGradeFromMarks,
-  calcCGPAAndGrade,
+  calcCGPAandGrade,
 };

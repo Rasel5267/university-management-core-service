@@ -4,7 +4,7 @@ import httpStatus from 'http-status';
 import catchAsync from '../../../shared/catchAsync';
 import pick from '../../../shared/pick';
 import sendResponse from '../../../shared/sendResponse';
-import { studentEnrolledCourseMarkFilterableFields } from './studentEnrolledCourseMark.constant';
+import { studentEnrolledCourseMarkFilterableFields } from './studentEnrolledCourseMark.constants';
 import { StudentEnrolledCourseMarkService } from './studentEnrolledCourseMark.service';
 
 const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
@@ -23,15 +23,14 @@ const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const updateStudentMark = catchAsync(async (req: Request, res: Response) => {
-  const result = await StudentEnrolledCourseMarkService.updateStudentMark(
+const updateStudentMarks = catchAsync(async (req: Request, res: Response) => {
+  const result = await StudentEnrolledCourseMarkService.updateStudentMarks(
     req.body
   );
-
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Mark updated successfully',
+    message: 'marks updated!',
     data: result,
   });
 });
@@ -40,11 +39,10 @@ const updateFinalMarks = catchAsync(async (req: Request, res: Response) => {
   const result = await StudentEnrolledCourseMarkService.updateFinalMarks(
     req.body
   );
-
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Final Marks updated successfully',
+    message: 'Final marks updated!',
     data: result,
   });
 });
@@ -70,7 +68,7 @@ const getMyCourseMarks = catchAsync(async (req: Request, res: Response) => {
 
 export const StudentEnrolledCourseMarkController = {
   getAllFromDB,
-  updateStudentMark,
+  updateStudentMarks,
   updateFinalMarks,
   getMyCourseMarks,
 };

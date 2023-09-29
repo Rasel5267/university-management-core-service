@@ -8,14 +8,16 @@ import {
   roomRelationalFields,
   roomRelationalFieldsMapper,
   roomSearchableFields,
-} from './room.constant';
+} from './room.constants';
 import { IRoomFilterRequest } from './room.interface';
 
 const insertIntoDB = async (data: Room): Promise<Room> => {
   const result = await prisma.room.create({
     data,
+    include: {
+      building: true,
+    },
   });
-
   return result;
 };
 
@@ -23,7 +25,7 @@ const getAllFromDB = async (
   filters: IRoomFilterRequest,
   options: IPaginationOptions
 ): Promise<IGenericResponse<Room[]>> => {
-  const { page, limit, skip } = paginationHelpers.calculatePagination(options);
+  const { limit, page, skip } = paginationHelpers.calculatePagination(options);
   const { searchTerm, ...filterData } = filters;
 
   const andConditions = [];
@@ -52,7 +54,6 @@ const getAllFromDB = async (
           return {
             [key]: {
               equals: (filterData as any)[key],
-              mode: 'insensitive',
             },
           };
         }
@@ -91,7 +92,7 @@ const getAllFromDB = async (
   };
 };
 
-const getDataById = async (id: string): Promise<Room | null> => {
+const getByIdFromDB = async (id: string): Promise<Room | null> => {
   const result = await prisma.room.findUnique({
     where: {
       id,
@@ -100,41 +101,41 @@ const getDataById = async (id: string): Promise<Room | null> => {
       building: true,
     },
   });
-
   return result;
 };
 
 const updateOneInDB = async (
   id: string,
   payload: Partial<Room>
-): Promise<Room | null> => {
+): Promise<Room> => {
   const result = await prisma.room.update({
+    where: {
+      id,
+    },
+    data: payload,
+    include: {
+      building: true,
+    },
+  });
+  return result;
+};
+
+const deleteByIdFromDB = async (id: string): Promise<Room> => {
+  const result = await prisma.room.delete({
     where: {
       id,
     },
     include: {
       building: true,
     },
-    data: payload,
   });
-
-  return result;
-};
-
-const deleteFromDB = async (id: string): Promise<Room> => {
-  const result = await prisma.room.delete({
-    where: {
-      id,
-    },
-  });
-
   return result;
 };
 
 export const RoomService = {
   insertIntoDB,
   getAllFromDB,
-  getDataById,
+  getByIdFromDB,
   updateOneInDB,
-  deleteFromDB,
+  deleteByIdFromDB,
 };

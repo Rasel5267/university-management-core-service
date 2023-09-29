@@ -12,41 +12,42 @@ import {
   studentSemesterPaymentRelationalFields,
   studentSemesterPaymentRelationalFieldsMapper,
   studentSemesterPaymentSearchableFields,
-} from './studentSemesterPayment.constant';
+} from './studentSemesterPayment.constants';
 import { IStudentSemesterPaymentFilterRequest } from './studentSemesterPayment.interface';
 
 const createSemesterPayment = async (
-  prismaTransactionClient: Omit<
+  prismaClient: Omit<
     PrismaClient<PrismaClientOptions, never, DefaultArgs>,
     '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
   >,
   payload: {
     studentId: string;
     academicSemesterId: string;
-    fullPaymentAmount: number;
+    totalPaymentAmount: number;
   }
 ) => {
-  const isExist =
-    await prismaTransactionClient.studentSemesterPayment.findFirst({
-      where: {
-        student: {
-          id: payload.studentId,
-        },
-        academicSemester: {
-          id: payload.academicSemesterId,
-        },
+  const isExist = await prismaClient.studentSemesterPayment.findFirst({
+    where: {
+      student: {
+        id: payload.studentId,
       },
-    });
+      academicSemester: {
+        id: payload.academicSemesterId,
+      },
+    },
+  });
 
   if (!isExist) {
     const dataToInsert = {
       studentId: payload.studentId,
       academicSemesterId: payload.academicSemesterId,
-      fullPaymentAmount: payload.fullPaymentAmount,
-      partialPaymentAmount: payload.fullPaymentAmount,
+      fullPaymentAmount: payload.totalPaymentAmount,
+      partialPaymentAmount: payload.totalPaymentAmount * 0.5,
+      totalDueAmount: payload.totalPaymentAmount,
       totalPaidAmount: 0,
     };
-    await prismaTransactionClient.studentSemesterPayment.create({
+
+    await prismaClient.studentSemesterPayment.create({
       data: dataToInsert,
     });
   }

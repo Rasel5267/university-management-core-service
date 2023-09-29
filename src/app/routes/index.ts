@@ -1,19 +1,19 @@
 import express from 'express';
-import { AcademicDepartmentRoute } from '../modules/academicDepartment/academicDepartment.route';
-import { AcademicFacultyRoute } from '../modules/academicFaculty/academicFaculty.route';
-import { AcademicSemesterRoute } from '../modules/academicSemester/academicSemester.route';
-import { BuildingRoute } from '../modules/building/building.route';
-import { CourseRoute } from '../modules/course/course.route';
-import { FacultyRoute } from '../modules/faculty/faculty.route';
-import { OfferedCourseRoute } from '../modules/offeredCourse/offeredCourse.route';
-import { OfferedCourseClassScheduleRoute } from '../modules/offeredCourseClassSchedule/offeredCourseClassSchedule.route';
-import { OfferedCourseSectionRoute } from '../modules/offeredCourseSection/offeredCourseSection.route';
-import { RoomRoute } from '../modules/room/room.route';
-import { SemesterRegistrationRoute } from '../modules/semesterRegistration/semesterRegistration.route';
-import { StudentRoute } from '../modules/student/student.route';
-import { studentEnrolledCourseRoute } from '../modules/studentEnrolledCourse/studentEnrolledCourse.route';
-import { StudentEnrolledCourseMarkRoute } from '../modules/studentEnrolledCourseMark/studentEnrolledCourseMark.route';
-import { studentSemesterPaymentRoute } from '../modules/studentSemesterPayment/studentSemesterPayment.route';
+import { academicDepartmentRoutes } from '../modules/academicDepartment/academicDepartment.routes';
+import { academicFacultyRoutes } from '../modules/academicFaculty/academicFaculty.routes';
+import { AcademicSemesterRoutes } from '../modules/academicSemester/academicSemester.routes';
+import { buildingRoutes } from '../modules/building/building.routes';
+import { courseRoutes } from '../modules/course/course.routes';
+import { facultyRoutes } from '../modules/faculty/faculty.routes';
+import { offeredCourseRoutes } from '../modules/offeredCourse/offeredCourse.routes';
+import { offeredCourseClassScheduleRoutes } from '../modules/offeredCourseClassSchedule/offeredCourseClassSchedule.routes';
+import { offeredCourseSectionRoutes } from '../modules/offeredCourseSection/offeredCourseSection.routes';
+import { roomRoutes } from '../modules/room/room.routes';
+import { semesterRegistrationRoutes } from '../modules/semesterRegistration/semesterRegistration.routes';
+import { studentRoutes } from '../modules/student/student.routes';
+import { studentEnrolledCourseRoutes } from '../modules/studentEnrolledCourse/studentEnrolledCourse.routes';
+import { studentEnrolledCourseMarkRoutes } from '../modules/studentEnrolledCourseMark/studentEnrolledCourseMark.routes';
+import { studentSemesterPaymentRoutes } from '../modules/studentSemesterPayment/studentSemesterPayment.routes';
 
 const router = express.Router();
 
@@ -21,63 +21,63 @@ const moduleRoutes = [
   // ... routes
   {
     path: '/academic-semesters',
-    route: AcademicSemesterRoute,
+    route: AcademicSemesterRoutes,
   },
   {
     path: '/academic-faculties',
-    route: AcademicFacultyRoute,
+    route: academicFacultyRoutes,
   },
   {
     path: '/academic-departments',
-    route: AcademicDepartmentRoute,
-  },
-  {
-    path: '/students',
-    route: StudentRoute,
+    route: academicDepartmentRoutes,
   },
   {
     path: '/faculties',
-    route: FacultyRoute,
+    route: facultyRoutes,
+  },
+  {
+    path: '/students',
+    route: studentRoutes,
   },
   {
     path: '/buildings',
-    route: BuildingRoute,
+    route: buildingRoutes,
   },
   {
     path: '/rooms',
-    route: RoomRoute,
+    route: roomRoutes,
   },
   {
     path: '/courses',
-    route: CourseRoute,
+    route: courseRoutes,
   },
   {
     path: '/semester-registrations',
-    route: SemesterRegistrationRoute,
+    route: semesterRegistrationRoutes,
   },
   {
     path: '/offered-courses',
-    route: OfferedCourseRoute,
+    route: offeredCourseRoutes,
   },
   {
     path: '/offered-course-sections',
-    route: OfferedCourseSectionRoute,
+    route: offeredCourseSectionRoutes,
   },
   {
     path: '/offered-course-class-schedules',
-    route: OfferedCourseClassScheduleRoute,
-  },
-  {
-    path: '/student-enrolled-course-marks',
-    route: StudentEnrolledCourseMarkRoute,
+    route: offeredCourseClassScheduleRoutes,
   },
   {
     path: '/student-enrolled-courses',
-    route: studentEnrolledCourseRoute,
+    route: studentEnrolledCourseRoutes,
+  },
+  {
+    path: '/student-enrolled-course-marks',
+    route: studentEnrolledCourseMarkRoutes,
   },
   {
     path: '/student-semester-payments',
-    route: studentSemesterPaymentRoute,
+    route: studentSemesterPaymentRoutes,
   },
 ];
 

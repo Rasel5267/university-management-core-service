@@ -147,7 +147,8 @@ const getAllFromDB = async (
   };
 };
 
-const updateStudentMark = async (payload: any) => {
+const updateStudentMarks = async (payload: any) => {
+  console.log(payload);
   const { studentId, academicSemesterId, courseId, examType, marks } = payload;
 
   const studentEnrolledCourseMarks =
@@ -171,10 +172,9 @@ const updateStudentMark = async (payload: any) => {
   if (!studentEnrolledCourseMarks) {
     throw new ApiError(
       httpStatus.BAD_REQUEST,
-      'Student Enrolled Course Mark not found'
+      'Student enrolled course mark not found!'
     );
   }
-
   const result = StudentEnrolledCourseMarkUtils.getGradeFromMarks(marks);
 
   const updateStudentMarks = await prisma.studentEnrolledCourseMark.update({
@@ -209,10 +209,11 @@ const updateFinalMarks = async (payload: any) => {
   if (!studentEnrolledCourse) {
     throw new ApiError(
       httpStatus.BAD_REQUEST,
-      'Student Enrolled Course not found'
+      'Student enrolled course data not found!'
     );
   }
 
+  //console.log(studentEnrolledCourse)
   const studentEnrolledCourseMarks =
     await prisma.studentEnrolledCourseMark.findMany({
       where: {
@@ -230,10 +231,11 @@ const updateFinalMarks = async (payload: any) => {
       },
     });
 
+  //console.log(studentEnrolledCourseMarks)
   if (!studentEnrolledCourseMarks.length) {
     throw new ApiError(
       httpStatus.BAD_REQUEST,
-      'Student Enrolled Course mark not found'
+      'student enrolled course mark not found!'
     );
   }
 
@@ -243,10 +245,10 @@ const updateFinalMarks = async (payload: any) => {
   const finalTermMarks =
     studentEnrolledCourseMarks.find(item => item.examType === ExamType.FINAL)
       ?.marks || 0;
+  //console.log(midTermMarks, finalTermMarks)
 
   const totalFinalMarks =
     Math.ceil(midTermMarks * 0.4) + Math.ceil(finalTermMarks * 0.6);
-
   const result =
     StudentEnrolledCourseMarkUtils.getGradeFromMarks(totalFinalMarks);
 
@@ -282,7 +284,7 @@ const updateFinalMarks = async (payload: any) => {
     },
   });
 
-  const academicResult = await StudentEnrolledCourseMarkUtils.calcCGPAAndGrade(
+  const academicResult = await StudentEnrolledCourseMarkUtils.calcCGPAandGrade(
     grades
   );
 
@@ -374,7 +376,7 @@ const getMyCourseMarks = async (
 export const StudentEnrolledCourseMarkService = {
   createStudentEnrolledCourseDefaultMark,
   getAllFromDB,
-  updateStudentMark,
+  updateStudentMarks,
   updateFinalMarks,
   getMyCourseMarks,
 };

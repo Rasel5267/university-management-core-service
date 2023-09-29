@@ -14,7 +14,7 @@ import {
   studentEnrolledCourseRelationalFields,
   studentEnrolledCourseRelationalFieldsMapper,
   studentEnrolledCourseSearchableFields,
-} from './studentEnrolledCourse.constant';
+} from './studentEnrolledCourse.constants';
 import { IStudentEnrolledCourseFilterRequest } from './studentEnrolledCourse.interface';
 
 const insertIntoDB = async (

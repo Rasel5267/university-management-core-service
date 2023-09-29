@@ -12,7 +12,7 @@ import {
   offeredCourseSectionRelationalFields,
   offeredCourseSectionRelationalFieldsMapper,
   offeredCourseSectionSearchableFields,
-} from './offeredCourseSection.constant';
+} from './offeredCourseSection.constants';
 import {
   IClassSchedule,
   IOfferedCourseSectionCreate,
@@ -38,8 +38,8 @@ const insertIntoDB = async (
   }
 
   await asyncForEach(classSchedules, async (schedule: any) => {
-    await OfferedCourseClassScheduleUtils.checkRoomAvailability(schedule);
-    await OfferedCourseClassScheduleUtils.checkFacultyAvailability(schedule);
+    await OfferedCourseClassScheduleUtils.checkRoomAvailable(schedule);
+    await OfferedCourseClassScheduleUtils.checkFacultyAvailable(schedule);
   });
 
   const offerCourseSectionData = await prisma.offeredCourseSection.findFirst({
@@ -184,7 +184,7 @@ const getAllFromDB = async (
   };
 };
 
-const getDataById = async (
+const getByIdFromDB = async (
   id: string
 ): Promise<OfferedCourseSection | null> => {
   const result = await prisma.offeredCourseSection.findUnique({
@@ -205,7 +205,8 @@ const getDataById = async (
 const updateOneInDB = async (
   id: string,
   payload: Partial<OfferedCourseSection>
-): Promise<OfferedCourseSection | null> => {
+): Promise<OfferedCourseSection> => {
+  //update
   const result = await prisma.offeredCourseSection.update({
     where: {
       id,
@@ -222,7 +223,7 @@ const updateOneInDB = async (
   return result;
 };
 
-const deleteFromDB = async (id: string): Promise<OfferedCourseSection> => {
+const deleteByIdFromDB = async (id: string): Promise<OfferedCourseSection> => {
   const result = await prisma.offeredCourseSection.delete({
     where: {
       id,
@@ -241,7 +242,7 @@ const deleteFromDB = async (id: string): Promise<OfferedCourseSection> => {
 export const OfferedCourseSectionService = {
   insertIntoDB,
   getAllFromDB,
-  getDataById,
+  getByIdFromDB,
   updateOneInDB,
-  deleteFromDB,
+  deleteByIdFromDB,
 };

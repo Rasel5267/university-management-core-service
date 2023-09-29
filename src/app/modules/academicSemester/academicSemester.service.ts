@@ -1,34 +1,55 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AcademicSemester, Prisma } from '@prisma/client';
+import httpStatus from 'http-status';
+import ApiError from '../../../errors/ApiError';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import prisma from '../../../shared/prisma';
-import { academicSemesterSearchAbleFields } from './academicSemester.constant';
-import { IAcademicSemesterFilterRequest } from './academicSemester.interface';
+import { RedisClient } from '../../../shared/redis';
+import {
+  AcademicSemesterSearchAbleFields,
+  EVENT_ACADEMIC_SEMESTER_CREATED,
+  EVENT_ACADEMIC_SEMESTER_DELETED,
+  EVENT_ACADEMIC_SEMESTER_UPDATED,
+  academicSemesterTitleCodeMapper,
+} from './academicSemester.constants';
+import { IAcademicSemeterFilterRequest } from './academicSemester.interface';
 
 const insertIntoDB = async (
-  data: AcademicSemester
+  academicSemesterData: AcademicSemester
 ): Promise<AcademicSemester> => {
+  if (
+    academicSemesterTitleCodeMapper[academicSemesterData.title] !==
+    academicSemesterData.code
+  ) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid Semester Code');
+  }
   const result = await prisma.academicSemester.create({
-    data,
+    data: academicSemesterData,
   });
+
+  if (result) {
+    await RedisClient.publish(
+      EVENT_ACADEMIC_SEMESTER_CREATED,
+      JSON.stringify(result)
+    );
+  }
 
   return result;
 };
 
 const getAllFromDB = async (
-  filters: IAcademicSemesterFilterRequest,
+  filters: IAcademicSemeterFilterRequest,
   options: IPaginationOptions
 ): Promise<IGenericResponse<AcademicSemester[]>> => {
   const { page, limit, skip } = paginationHelpers.calculatePagination(options);
   const { searchTerm, ...filterData } = filters;
-
-  const andConditions = [];
+  console.log(options);
+  const andConditons = [];
 
   if (searchTerm) {
-    andConditions.push({
-      OR: academicSemesterSearchAbleFields.map(field => ({
+    andConditons.push({
+      OR: AcademicSemesterSearchAbleFields.map(field => ({
         [field]: {
           contains: searchTerm,
           mode: 'insensitive',
@@ -38,21 +59,26 @@ const getAllFromDB = async (
   }
 
   if (Object.keys(filterData).length > 0) {
-    andConditions.push({
+    andConditons.push({
       AND: Object.keys(filterData).map(key => ({
         [key]: {
-          equals: (filterData as any)[key].toLowerCase(),
-          mode: 'insensitive',
+          equals: (filterData as any)[key],
         },
       })),
     });
   }
 
-  const whereConditions: Prisma.AcademicSemesterWhereInput =
-    andConditions.length > 0 ? { AND: andConditions } : {};
+  /**
+   * person = { name: 'fahim' }
+   * name = person[name]
+   *
+   */
+
+  const whereConditons: Prisma.AcademicSemesterWhereInput =
+    andConditons.length > 0 ? { AND: andConditons } : {};
 
   const result = await prisma.academicSemester.findMany({
-    where: whereConditions,
+    where: whereConditons,
     skip,
     take: limit,
     orderBy:
@@ -90,23 +116,35 @@ const getDataById = async (id: string): Promise<AcademicSemester | null> => {
 const updateOneInDB = async (
   id: string,
   payload: Partial<AcademicSemester>
-): Promise<AcademicSemester | null> => {
+): Promise<AcademicSemester> => {
   const result = await prisma.academicSemester.update({
     where: {
       id,
     },
     data: payload,
   });
+  if (result) {
+    await RedisClient.publish(
+      EVENT_ACADEMIC_SEMESTER_UPDATED,
+      JSON.stringify(result)
+    );
+  }
   return result;
 };
 
-const deleteFromDB = async (id: string): Promise<AcademicSemester> => {
+const deleteByIdFromDB = async (id: string): Promise<AcademicSemester> => {
   const result = await prisma.academicSemester.delete({
     where: {
       id,
     },
   });
 
+  if (result) {
+    await RedisClient.publish(
+      EVENT_ACADEMIC_SEMESTER_DELETED,
+      JSON.stringify(result)
+    );
+  }
   return result;
 };
 
@@ -115,5 +153,5 @@ export const AcademicSemesterService = {
   getAllFromDB,
   getDataById,
   updateOneInDB,
-  deleteFromDB,
+  deleteByIdFromDB,
 };
